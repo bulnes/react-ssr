@@ -11,15 +11,18 @@ const PORT = 8000
 
 const app = express()
 
-app.use('/', (req, res, next) => {
-  fs.readFile(path.resolve('./build/index.html'), 'utf-8', (err, data) => {
+// Apenas para as rotas exclusivas na raiz
+app.use('^/$', (req, res) => {
+  const entryFile = path.resolve(__dirname, '..', 'build', 'index.html')
+
+  fs.readFile(entryFile, 'utf-8', (err, rawIndexFileContent) => {
     if (err) {
       console.log(err)
       return res.status(500).send('Something wrong happened')
     }
 
     return res.send(
-      data.replace(
+      rawIndexFileContent.replace(
         '<div id="root"></div>', 
         `<div id="root">${ReactDomServer.renderToString(<App />)}</div>`
       )
@@ -27,7 +30,7 @@ app.use('/', (req, res, next) => {
   })
 })
 
-app.use(express.static(path.resolve(__dirname, '..', 'build', 'index.html')))
+app.use(express.static(path.resolve(__dirname, '..', 'build')))
 
 app.listen(PORT, () => {
   console.log(`App launched on ${PORT}`)
