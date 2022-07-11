@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.hydrateRoot(document.getElementById('root'));
-root.render(
+ReactDOM.hydrateRoot(
+  document.getElementById('root'), 
   <React.StrictMode>
     <App />
   </React.StrictMode>
